@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build",
+    "dev": "gulp",
+    "watch": "gulp watch"
   },
   "author": "",
   "license": "ISC",
@@ -13,16 +15,15 @@
     "not dead"
   ],
   "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "babel": "^6.23.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.6",
-    "browser-sync": "^2.26.7",
-    "core-js": "^3.4.2",
+    "@babel/core": "^7.22.0",
+    "@babel/preset-env": "^7.22.0",
+    "babel-loader": "^9.1.2",
+    "browser-sync": "^2.29.0",
+    "core-js": "^3.31.0",
     "gulp": "^4.0.2",
-    "webpack": "^4.41.2",
-    "webpack-stream": "^5.2.1"
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-stream": "^7.0.0"
   },
   "dependencies": {
     "jquery": "^3.4.1",
