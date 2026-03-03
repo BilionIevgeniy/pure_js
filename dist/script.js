@@ -231,7 +231,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const modals = () => {};
+const modals = () => {
+  const popupBtn = document.querySelector(".popup_engineer_btn");
+  const modal = document.querySelector(".popup_engineer");
+  const popupDialogs = document.querySelectorAll(".popup_dialog");
+  const closeBtns = document.querySelectorAll(".popup_close");
+  closeBtns.forEach(popupDialog => {
+    popupDialog.addEventListener("click", e => {
+      modal.style.display = "none";
+    });
+  });
+  popupDialogs.forEach(popupDialog => {
+    popupDialog.addEventListener("click", e => {
+      e.stopPropagation();
+    });
+  });
+  modal.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+  popupBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+};
 
 // const modals = () => {
 //     function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
@@ -460,78 +481,75 @@ __webpack_require__.r(__webpack_exports__);
 
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
-  console.log("in $");
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".glazing_slider").slick({
+    infinite: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    responsive: [{
+      breakpoint: 1201,
+      settings: {
+        slidesToShow: 4,
+        prevArrow: '<button class="prev arrow"></button>',
+        nextArrow: '<button class="next arrow"></button>',
+        slidesToScroll: 1
+      }
+    }, {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 3,
+        prevArrow: '<button class="prev arrow"></button>',
+        nextArrow: '<button class="next arrow"></button>',
+        slidesToScroll: 2
+      }
+    }, {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2,
+        prevArrow: '<button class="prev arrow"></button>',
+        nextArrow: '<button class="next arrow"></button>',
+        slidesToScroll: 2
+      }
+    }, {
+      breakpoint: 530,
+      settings: {
+        slidesToShow: 1,
+        prevArrow: '<button class="prev arrow"></button>',
+        nextArrow: '<button class="next arrow"></button>',
+        slidesToScroll: 1
+      }
+    }]
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".decoration_slider").slick({
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    responsive: [{
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 3,
+        prevArrow: '<button class="prev arrow"></button>',
+        nextArrow: '<button class="next arrow"></button>',
+        slidesToScroll: 1
+      }
+    }, {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 2,
+        prevArrow: '<button class="prev arrow"></button>',
+        nextArrow: '<button class="next arrow"></button>',
+        slidesToScroll: 2
+      }
+    }, {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 1,
+        prevArrow: '<button class="prev arrow"></button>',
+        nextArrow: '<button class="next arrow"></button>',
+        slidesToScroll: 1
+      }
+    }]
+  });
 });
-// $(document).ready(function() {
-//     $('.glazing_slider').slick({
-//         infinite: true,
-//         slidesToShow: 5,
-//         slidesToScroll: 1,
-//         responsive: [{
-//             breakpoint: 1201,
-//             settings: {
-//                 slidesToShow: 4,
-//                 prevArrow: '<button class="prev arrow"></button>',
-//                 nextArrow: '<button class="next arrow"></button>',
-//                 slidesToScroll: 1
-//             }
-//         }, {
-//             breakpoint: 992,
-//             settings: {
-//                 slidesToShow: 3,
-//                 prevArrow: '<button class="prev arrow"></button>',
-//                 nextArrow: '<button class="next arrow"></button>',
-//                 slidesToScroll: 2
-//             }
-//         }, {
-//             breakpoint: 768,
-//             settings: {
-//                 slidesToShow: 2,
-//                 prevArrow: '<button class="prev arrow"></button>',
-//                 nextArrow: '<button class="next arrow"></button>',
-//                 slidesToScroll: 2
-//             }
-//         }, {
-//             breakpoint: 530,
-//             settings: {
-//                 slidesToShow: 1,
-//                 prevArrow: '<button class="prev arrow"></button>',
-//                 nextArrow: '<button class="next arrow"></button>',
-//                 slidesToScroll: 1
-//             }
-//         }]
-//     });
-//     $('.decoration_slider').slick({
-//         infinite: true,
-//         slidesToShow: 4,
-//         slidesToScroll: 1,
-//         responsive: [{
-//             breakpoint: 1200,
-//             settings: {
-//                 slidesToShow: 3,
-//                 prevArrow: '<button class="prev arrow"></button>',
-//                 nextArrow: '<button class="next arrow"></button>',
-//                 slidesToScroll: 1
-//             }
-//         }, {
-//             breakpoint: 992,
-//             settings: {
-//                 slidesToShow: 2,
-//                 prevArrow: '<button class="prev arrow"></button>',
-//                 nextArrow: '<button class="next arrow"></button>',
-//                 slidesToScroll: 2
-//             }
-//         }, {
-//             breakpoint: 768,
-//             settings: {
-//                 slidesToShow: 1,
-//                 prevArrow: '<button class="prev arrow"></button>',
-//                 nextArrow: '<button class="next arrow"></button>',
-//                 slidesToScroll: 1
-//             }
-//         }]
-//     });
-// });
 
 /***/ },
 
@@ -14383,9 +14401,10 @@ window.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
   let modalState = {};
-  let deadline = "2020-02-01";
-  (0,_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState);
-  // modals();
+  let deadline = "2026-03-06";
+
+  // changeModalState(modalState);
+  (0,_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])();
   // tabs('.glazing_slider ', '.glazing_block', '.glazing_content', 'active');
   // tabs('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click');
   // tabs('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');

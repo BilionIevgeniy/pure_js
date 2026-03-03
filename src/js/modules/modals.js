@@ -1,4 +1,27 @@
-const modals = () => {};
+const modals = () => {
+  const popupBtn = document.querySelector(".popup_engineer_btn");
+  const modal = document.querySelector(".popup_engineer");
+  const popupDialogs = document.querySelectorAll(".popup_dialog");
+  const closeBtns = document.querySelectorAll(".popup_close");
+
+  closeBtns.forEach((popupDialog) => {
+    popupDialog.addEventListener("click", (e) => {
+      modal.style.display = "none";
+    });
+  });
+  popupDialogs.forEach((popupDialog) => {
+    popupDialog.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  modal.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+  popupBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
+};
 
 // const modals = () => {
 //     function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
