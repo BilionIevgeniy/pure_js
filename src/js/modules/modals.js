@@ -1,106 +1,97 @@
 const modals = () => {
-  const popupBtn = document.querySelector(".popup_engineer_btn");
-  const modal = document.querySelector(".popup_engineer");
-  const popupDialogs = document.querySelectorAll(".popup_dialog");
-  const closeBtns = document.querySelectorAll(".popup_close");
-
-  closeBtns.forEach((popupDialog) => {
-    popupDialog.addEventListener("click", (e) => {
+  let wasOpend = false;
+  function bindModal(
+    triggerSelector,
+    modalSelector,
+    closeSelector,
+    closeClickOverlay = true,
+  ) {
+    const windows = document.querySelectorAll("[data-modal]");
+    const modal = document.querySelector(modalSelector);
+    const triggers = document.querySelectorAll(triggerSelector);
+    const close = document.querySelector(closeSelector);
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", (e) => {
+        wasOpend = true;
+        if (e.target) {
+          e.preventDefault();
+        }
+        const scrollWidth = getScrollbarWidth();
+        modal.style.display = "block";
+        document.body.style.paddingRight = `${scrollWidth}px`;
+        // document.body.style.overflow = "hidden";
+        document.body.classList.add("modal-open");
+      });
+    });
+    close.addEventListener("click", (e) => {
       modal.style.display = "none";
+      document.body.style.paddingRight = "0px";
+      // document.body.style.overflow = "auto";
+      document.body.classList.remove("modal-open");
     });
-  });
-  popupDialogs.forEach((popupDialog) => {
-    popupDialog.addEventListener("click", (e) => {
-      e.stopPropagation();
+    modal.addEventListener("click", (e) => {
+      if (e.target == modal && closeClickOverlay) {
+        modal.style.display = "none";
+        document.body.style.paddingRight = "0px";
+        // document.body.style.overflow = "auto";
+        document.body.classList.remove("modal-open");
+      }
     });
-  });
+  }
+  function getScrollbarWidth() {
+    const outer = document.createElement("div");
+    outer.style.visibility = "hidden";
+    outer.style.overflow = "scroll";
+    document.body.appendChild(outer);
 
-  modal.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-  popupBtn.addEventListener("click", () => {
-    modal.style.display = "block";
-  });
+    const inner = document.createElement("div");
+    outer.appendChild(inner);
+
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+    outer.parentNode.removeChild(outer);
+
+    return scrollbarWidth;
+  }
+  function showModalByTime(selector, time) {
+    setTimeout(function () {
+      if (!wasOpend) {
+        document.querySelector(selector).style.display = "block";
+        document.body.style.overflow = "hidden";
+        const scrollWidth = getScrollbarWidth();
+        document.body.style.paddingRight = `${scrollWidth}px`;
+        wasOpend = true;
+      }
+    }, time);
+
+    setTimeout(function () {
+      document.querySelector(selector).style.display = "block";
+      document.body.style.overflow = "hidden";
+      const scrollWidth = getScrollbarWidth();
+      document.body.style.paddingRight = `${scrollWidth}px`;
+    }, time);
+  }
+
+  bindModal(
+    ".popup_engineer_btn",
+    ".popup_engineer",
+    ".popup_engineer .popup_close",
+  );
+  bindModal(".phone_link", ".popup", ".popup .popup_close");
+  bindModal(".popup_calc_btn", ".popup_calc", ".popup_calc_close");
+  bindModal(
+    ".popup_calc_button",
+    ".popup_calc_profile",
+    ".popup_calc_profile_close",
+    false,
+  );
+  bindModal(
+    ".popup_calc_profile_button",
+    ".popup_calc_end",
+    ".popup_calc_end_close",
+    false,
+  );
+  showModalByTime(".popup", 60000);
 };
-
-// const modals = () => {
-//     function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
-//         const trigger = document.querySelectorAll(triggerSelector),
-//               modal = document.querySelector(modalSelector),
-//               close = document.querySelector(closeSelector),
-//               windows = document.querySelectorAll('[data-modal]'),
-//               scroll = calcScroll();
-
-//         trigger.forEach(item => {
-//             item.addEventListener('click', (e) => {
-//                 if (e.target) {
-//                     e.preventDefault();
-//                 }
-
-//                 windows.forEach(item => {
-//                     item.style.display = 'none';
-//                 });
-
-//                 modal.style.display = "block";
-//                 document.body.style.overflow = "hidden";
-//                 document.body.style.marginRight = `${scroll}px`;
-//                 // document.body.classList.add('modal-open');
-//             });
-//         });
-
-//         close.addEventListener('click', () => {
-//             windows.forEach(item => {
-//                 item.style.display = 'none';
-//             });
-
-//             modal.style.display = "none";
-//             document.body.style.overflow = "";
-//             document.body.style.marginRight = `0px`;
-//             // document.body.classList.remove('modal-open');
-//         });
-
-//         modal.addEventListener('click', (e) => {
-//             if (e.target === modal && closeClickOverlay) {
-//                 windows.forEach(item => {
-//                     item.style.display = 'none';
-//                 });
-
-//                 modal.style.display = "none";
-//                 document.body.style.overflow = "";
-//                 document.body.style.marginRight = `0px`;
-//                 // document.body.classList.remove('modal-open');
-//             }
-//         });
-//     }
-
-//     function showModalByTime(selector, time) {
-//         setTimeout(function() {
-//             document.querySelector(selector).style.display = 'block';
-//             document.body.style.overflow = "hidden";
-//         }, time);
-//     }
-
-//     function calcScroll() {
-//         let div = document.createElement('div');
-
-//         div.style.width = '50px';
-//         div.style.height = '50px';
-//         div.style.overflowY = 'scroll';
-//         div.style.visibility = 'hidden';
-
-//         document.body.appendChild(div);
-//         let scrollWidth = div.offsetWidth - div.clientWidth;
-//         div.remove();
-
-//         return scrollWidth;
-//     }
-
-//     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
-//     bindModal('.phone_link', '.popup', '.popup .popup_close');
-//     bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close');
-//     bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
-//     bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
-//     // showModalByTime('.popup', 60000);
-// };
 
 export default modals;
