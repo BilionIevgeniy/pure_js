@@ -1,7 +1,6 @@
 import $ from "jquery";
 import "slick-carousel";
-
-$(document).ready(function () {
+export function slider() {
   $(".glazing_slider").slick({
     infinite: true,
     slidesToShow: 5,
@@ -79,4 +78,4 @@ $(document).ready(function () {
       },
     ],
   });
-});
+}
