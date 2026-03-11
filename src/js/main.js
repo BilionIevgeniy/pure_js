@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "do_image_more",
     "inline-block",
   );
-  // forms(modalState);
+  forms(modalState);
   // timer('.container1', deadline);
   // images();
 });
