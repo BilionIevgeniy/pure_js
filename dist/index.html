@@ -866,8 +866,9 @@
         <div class="popup_form">
           <form class="form" action="#">
             <h2>Book a free measurement <br><span>today</span></h2>
-            <input class="form-control form_input" name="user_name" required type="text" placeholder="Enter your name">
-            <input class="form-control form_input" name="user_phone" required type="text"
+            <input required class="form-control form_input" name="user_name" required type="text"
+              placeholder="Enter your name">
+            <input required class="form-control form_input" name="user_phone" required type="text"
               placeholder="Enter your phone">
             <button class="text-uppercase btn-block button" name="submit" type="submit">Call a surveyor!</button>
             <p class="form_notice">Your data is confidential</p>
@@ -880,7 +881,7 @@
   <!-- Calculator -->
   <div class="popup_calc" data-modal>
     <div class="popup_dialog">
-      <div class="popup_calc_content text-center">
+      <form class="popup_calc_content text-center" data-calc="start">
         <button type="button" class="popup_calc_close"><strong>&times;</strong></button>
         <h2>Calculator</h2>
         <h3>Select balcony shape <br>and specify dimensions</h3>
@@ -900,23 +901,23 @@
           <img src="assets/img/modal_calc/balkon/type3.png" alt="Type3">
           <img src="assets/img/modal_calc/balkon/type4.png" alt="Type4">
         </div>
-        <input class="form-control" id="width" type="text" placeholder="Width" required>
-        <label for="width">mm</label>
+        <input name="width" class="form-control" id="width" type="number" placeholder="Width" required>
+        <label required for="width">mm</label>
         <div class="multiplication"><strong>&times;</strong></div>
-        <input class="form-control" id="height" type="text" placeholder="Height" required>
-        <label for="height">mm</label>
-        <button class="button popup_calc_button">Next</button>
-      </div>
+        <input name="height" class="form-control" id="height" type="number" placeholder="Height" required>
+        <label required for="height">mm</label>
+        <button class="button popup_calc_button" type="submit">Next</button>
+      </form>
     </div>
   </div>
 
   <div class="popup_calc_profile" data-modal>
     <div class="popup_dialog">
-      <div class="popup_calc_profile_content text-center">
+      <form class="popup_calc_profile_content text-center" data-calc="middle">
         <button type="button" class="popup_calc_profile_close"><strong>&times;</strong></button>
         <h2>Calculator</h2>
         <h3>Select glazing type <br>and its profile</h3>
-        <select class="form-control" name="view" id="view_type">
+        <select required class="form-control" name="view" id="view_type">
           <option value="tree">Wooden glazing</option>
           <option value="aluminum">Aluminum glazing</option>
           <option value="plastic">Plastic frame glazing</option>
@@ -936,8 +937,8 @@
           <span class="label">Warm</span>
         </label>
 
-        <button class="button popup_calc_profile_button">Next</button>
-      </div>
+        <button type="submit" class="button popup_calc_profile_button">Next</button>
+      </form>
     </div>
   </div>
 
@@ -958,6 +959,7 @@
       </div>
     </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,52 +1,39 @@
 import checkNumInputs from "./checkNumInputs";
+import { postData } from "./forms";
 
-const changeModalState = (state) => {};
+const changeModalState = () => {
+  const calcForms = document.querySelectorAll("[data-calc]");
+  const startForms = document.querySelector(".popup_calc");
+  const middleForms = document.querySelector(".popup_calc_profile");
+  const endForms = document.querySelector(".popup_calc_end");
+  let modalState = {};
+  for (const form of calcForms) {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData.entries());
 
-// const changeModalState = (state) => {
-//     const windowForm = document.querySelectorAll('.balcon_icons_img'),
-//           windowWidth = document.querySelectorAll('#width'),
-//           windowHeight = document.querySelectorAll('#height'),
-//           windowType = document.querySelectorAll('#view_type'),
-//           windowProfile = document.querySelectorAll('.checkbox');
-
-//     checkNumInputs('#width');
-//     checkNumInputs('#height');
-
-//     function bindActionToElems (event, elem, prop) {
-//         elem.forEach((item, i) => {
-//             item.addEventListener(event, () => {
-//                 switch(item.nodeName) {
-//                     case 'SPAN' :
-//                         state[prop] = i;
-//                         break;
-//                     case 'INPUT' :
-//                         if (item.getAttribute('type') === 'checkbox') {
-//                             i === 0 ? state[prop] = "Cold" : state[prop] = "Warm";
-//                             elem.forEach((box, j) => {
-//                                 box.checked = false;
-//                                 if (i == j) {
-//                                     box.checked = true;
-//                                 }
-//                             });
-//                         } else {
-//                             state[prop] = item.value;
-//                         }
-//                         break;
-//                     case 'SELECT' :
-//                         state[prop] = item.value;
-//                         break;
-//                 }
-
-//                 console.log(state);
-//             });
-//         });
-//     }
-
-//     bindActionToElems('click', windowForm, 'form');
-//     bindActionToElems('input', windowHeight, 'height');
-//     bindActionToElems('input', windowWidth, 'width');
-//     bindActionToElems('change', windowType, 'type');
-//     bindActionToElems('change', windowProfile, 'profile');
-// };
+      const { calc } = form.dataset;
+      form.style.display = "none";
+      modalState = { ...modalState, ...data };
+      switch (calc) {
+        case "start":
+          startForms.style.display = "none";
+          middleForms.style.display = "block";
+          break;
+        case "middle":
+          middleForms.style.display = "none";
+          endForms.style.display = "block";
+          break;
+        default:
+          let res = await postData("assets/server.php", modalState, form);
+          console.log(res);
+          endForms.style.display = "none";
+          break;
+      }
+      form.reset();
+    });
+  }
+};
 
 export default changeModalState;
