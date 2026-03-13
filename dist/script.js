@@ -1,6 +1,52 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/api.js"
+/*!***********************!*\
+  !*** ./src/js/api.js ***!
+  \***********************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   postData: () => (/* binding */ postData)
+/* harmony export */ });
+const message = {
+  loading: "Loading...,",
+  success: "Thank you! We will contact you soon",
+  failure: "Something went wrong..."
+};
+let statusMessage;
+const postData = async (url, data, form, cb) => {
+  let statusMessage = document.createElement("div");
+  statusMessage.classList.add("status");
+  statusMessage.textContent = message.loading;
+  form.appendChild(statusMessage);
+  let res;
+  try {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    statusMessage.textContent = message.success;
+    res = {
+      status: 200,
+      text: () => {
+        Promise.resolve(data);
+      }
+    };
+  } catch (error) {
+    statusMessage.textContent = message.failure;
+  } finally {
+    setTimeout(() => {
+      statusMessage.remove();
+      form.reset();
+      cb();
+    }, 2000);
+  }
+  return await res.text();
+};
+
+/***/ },
+
 /***/ "./src/js/modules/changeModalState.js"
 /*!********************************************!*\
   !*** ./src/js/modules/changeModalState.js ***!
@@ -12,15 +58,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _checkNumInputs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checkNumInputs */ "./src/js/modules/checkNumInputs.js");
-/* harmony import */ var _forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./forms */ "./src/js/modules/forms.js");
-
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api */ "./src/js/api.js");
 
 const changeModalState = () => {
   const calcForms = document.querySelectorAll("[data-calc]");
-  const startForms = document.querySelector(".popup_calc");
-  const middleForms = document.querySelector(".popup_calc_profile");
-  const endForms = document.querySelector(".popup_calc_end");
+  const startFormsWrapper = document.querySelector(".popup_calc");
+  const middleFormsWrapper = document.querySelector(".popup_calc_profile");
+  const endFormsWrapper = document.querySelector(".popup_calc_end");
   let modalState = {};
   for (const form of calcForms) {
     form.addEventListener("submit", async event => {
@@ -30,27 +74,26 @@ const changeModalState = () => {
       const {
         calc
       } = form.dataset;
-      form.style.display = "none";
       modalState = {
         ...modalState,
         ...data
       };
       switch (calc) {
         case "start":
-          startForms.style.display = "none";
-          middleForms.style.display = "block";
+          form.reset();
+          startFormsWrapper.style.display = "none";
+          middleFormsWrapper.style.display = "block";
           break;
         case "middle":
-          middleForms.style.display = "none";
-          endForms.style.display = "block";
+          form.reset();
+          middleFormsWrapper.style.display = "none";
+          endFormsWrapper.style.display = "block";
           break;
-        default:
-          let res = await (0,_forms__WEBPACK_IMPORTED_MODULE_1__.postData)("assets/server.php", modalState, form);
+        case "end":
+          let res = await (0,_api__WEBPACK_IMPORTED_MODULE_0__.postData)("assets/server.php", modalState, form, () => endFormsWrapper.style.display = "none");
           console.log(res);
-          endForms.style.display = "none";
           break;
       }
-      form.reset();
     });
   }
 };
@@ -90,20 +133,15 @@ const checkNumInputs = selector => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   postData: () => (/* binding */ postData)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _checkNumInputs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checkNumInputs */ "./src/js/modules/checkNumInputs.js");
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api */ "./src/js/api.js");
+/* harmony import */ var _checkNumInputs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./checkNumInputs */ "./src/js/modules/checkNumInputs.js");
 
-const message = {
-  loading: "Loading...,",
-  success: "Thank you! We will contact you soon",
-  failure: "Something went wrong..."
-};
-let statusMessage;
+
 const forms = () => {
   const allForm = document.querySelectorAll("form");
-  (0,_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('input[name="user_phone"]');
+  (0,_checkNumInputs__WEBPACK_IMPORTED_MODULE_1__["default"])('input[name="user_phone"]');
   for (const form of allForm) {
     if (form.getAttribute("data-calc")) {
       return;
@@ -111,34 +149,9 @@ const forms = () => {
     form.addEventListener("submit", async e => {
       e.preventDefault();
       const formData = new FormData(form);
-      let res = await postData("assets/server.php", formData, form);
+      let res = await (0,_api__WEBPACK_IMPORTED_MODULE_0__.postData)("assets/server.php", formData, form);
     });
   }
-};
-const postData = async (url, data, form) => {
-  let statusMessage = document.createElement("div");
-  statusMessage.classList.add("status");
-  form.appendChild(statusMessage);
-  console.log("posting");
-  statusMessage.textContent = message.loading;
-  let res;
-  try {
-    res = data;
-    // res = await fetch(url, {
-    //   method: "POST",
-    //   body: data,
-    // });
-    // res.text();
-    statusMessage.textContent = message.success;
-  } catch (error) {
-    statusMessage.textContent = message.failure;
-  } finally {
-    form.reset();
-    setTimeout(() => {
-      statusMessage.remove();
-    }, 5000);
-  }
-  return res;
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (forms);
 
