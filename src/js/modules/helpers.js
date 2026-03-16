@@ -1,4 +1,4 @@
-const checkNumInputs = (selector) => {
+export function checkNumInputs(selector) {
   const numInputs = document.querySelectorAll(selector);
 
   numInputs.forEach((item) => {
@@ -6,6 +6,12 @@ const checkNumInputs = (selector) => {
       item.value = item.value.replace(/\D/, "");
     });
   });
-};
+}
 
-export default checkNumInputs;
+export function addZeroToNum(num) {
+  if (num <= 9) {
+    return "0" + num;
+  } else {
+    return num;
+  }
+}

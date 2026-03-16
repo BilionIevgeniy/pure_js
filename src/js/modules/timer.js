@@ -1,59 +1,54 @@
-const timer = (id, deadline) => {};
-// const timer = (id, deadline) => {
-//     const addZero = (num) => {
-//         if (num <= 9) {
-//             return '0' + num;
-//         } else {
-//             return num;
-//         }
-//     };
+import { addZeroToNum } from "./helpers";
 
-//     const getTimeRemaining = (endtime) => {
-//         const t = Date.parse(endtime) - Date.parse(new Date()),
-//               seconds = Math.floor((t/1000) % 60),
-//               minutes = Math.floor((t/1000/60) % 60),
-//               hours = Math.floor((t/(1000 * 60 * 60)) % 24),
-//               days = Math.floor((t/(1000 * 60 * 60 * 24)));
+let timeInterval;
 
-//         return {
-//             'total': t,
-//             'days': days,
-//             'hours': hours,
-//             'minutes': minutes,
-//             'seconds': seconds
-//         };
-//     };
+export function timer(id, deadline) {
+  const containers = getTimerContainers(id);
+  setTimerContent(containers, deadline);
+  timeInterval = setInterval(() => setTimerContent(containers, deadline), 1000);
+}
 
-//     const setClock = (selector, endtime) => {
-//         const timer = document.querySelector(selector),
-//               days = timer.querySelector("#days"),
-//               hours = timer.querySelector("#hours"),
-//               minutes = timer.querySelector("#minutes"),
-//               seconds = timer.querySelector("#seconds"),
-//               timeInterval = setInterval(updateClock, 1000);
+function getTimerContainers(selector) {
+  const timer = document.querySelector(selector);
+  return {
+    daysContainer: timer.querySelector("#days"),
+    hoursContainer: timer.querySelector("#hours"),
+    minutesContainer: timer.querySelector("#minutes"),
+    secondsContainer: timer.querySelector("#seconds"),
+  };
+}
 
-//         updateClock();
+function setTimerContent(containers, deadline) {
+  const { daysContainer, hoursContainer, minutesContainer, secondsContainer } =
+    containers;
+  const { days, hours, minutes, seconds, total } = getRemainedTime(deadline);
+  daysContainer.textContent = addZeroToNum(days);
+  hoursContainer.textContent = addZeroToNum(hours);
+  minutesContainer.textContent = addZeroToNum(minutes);
+  secondsContainer.textContent = addZeroToNum(seconds);
 
-//         function updateClock() {
-//             const t = getTimeRemaining(endtime);
+  if (total <= 0) {
+    daysContainer.textContent = "00";
+    hoursContainer.textContent = "00";
+    minutesContainer.textContent = "00";
+    secondsContainer.textContent = "00";
 
-//             days.textContent = addZero(t.days);
-//             hours.textContent = addZero(t.hours);
-//             minutes.textContent = addZero(t.minutes);
-//             seconds.textContent = addZero(t.seconds);
+    clearInterval(timeInterval);
+  }
+}
 
-//             if (t.total <= 0) {
-//                 days.textContent = "00";
-//                 hours.textContent = "00";
-//                 minutes.textContent = "00";
-//                 seconds.textContent = "00";
+function getRemainedTime(deadline) {
+  const t = Date.parse(deadline) - Date.parse(new Date()),
+    seconds = Math.floor((t / 1000) % 60),
+    minutes = Math.floor((t / (1000 * 60)) % 60),
+    hours = Math.floor((t / (1000 * 60 * 60)) % 24),
+    days = Math.floor(t / (1000 * 60 * 60 * 24));
 
-//                 clearInterval(timeInterval);
-//             }
-//         }
-//     };
-
-//     setClock(id, deadline);
-// };
-
-export default timer;
+  return {
+    total: t,
+    days: days,
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+  };
+}

@@ -1,34 +1,34 @@
-const images = () => {};
+export function imagesHandler() {
+  const workSection = document.querySelector(".works"),
+    bigImage = document.createElement("img");
 
-// const images = () => {
-//     const imgPopup = document.createElement('div'),
-//           workSection = document.querySelector('.works'),
-//           bigImage = document.createElement('img');
+  const imgPopup = createImgPopup();
+  imgPopup.appendChild(bigImage);
+  workSection.appendChild(imgPopup);
 
-//     imgPopup.classList.add('popup');
-//     workSection.appendChild(imgPopup);
+  addWorkSectionListener(workSection, imgPopup, bigImage);
+}
 
-//     imgPopup.style.justifyContent = 'center';
-//     imgPopup.style.alignItems = 'center';
-//     imgPopup.style.display = 'none';
+function addWorkSectionListener(workSection, imgPopup, bigImage) {
+  workSection.addEventListener("click", (e) => {
+    e.preventDefault();
+    let target = e.target;
+    const previewImg = target.closest(".preview");
+    if (target == previewImg) {
+      imgPopup.style.display = "flex";
+      const path = previewImg.parentNode.getAttribute("href");
+      bigImage.setAttribute("src", path);
+    } else if (target != bigImage) {
+      imgPopup.style.display = "none";
+    }
+  });
+}
 
-//     imgPopup.appendChild(bigImage);
-
-//     workSection.addEventListener('click', (e) => {
-//         e.preventDefault();
-
-//         let target = e.target;
-
-//         if (target && target.classList.contains('preview')) {
-//             imgPopup.style.display = 'flex';
-//             const path = target.parentNode.getAttribute('href');
-//             bigImage.setAttribute('src', path);
-//         }
-
-//         if (target && target.matches('div.popup')) {
-//             imgPopup.style.display = 'none';
-//         }
-//     });
-// };
-
-export default images;
+function createImgPopup() {
+  const imgPopup = document.createElement("div");
+  imgPopup.classList.add("popup");
+  imgPopup.style.justifyContent = "center";
+  imgPopup.style.alignItems = "center";
+  imgPopup.style.display = "none";
+  return imgPopup;
+}

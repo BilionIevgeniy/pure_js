@@ -1,7 +1,7 @@
 import { postData } from "../api";
-import checkNumInputs from "./checkNumInputs";
+import { checkNumInputs } from "./helpers";
 
-const forms = () => {
+export function handleForms() {
   const allForm = document.querySelectorAll("form");
 
   checkNumInputs('input[name="user_phone"]');
@@ -16,6 +16,4 @@ const forms = () => {
       let res = await postData("assets/server.php", formData, form);
     });
   }
-};
-
-export default forms;
+}

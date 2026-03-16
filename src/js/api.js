@@ -16,9 +16,7 @@ export const postData = async (url, data, form, cb) => {
     statusMessage.textContent = message.success;
     res = {
       status: 200,
-      text: () => {
-        Promise.resolve(data);
-      },
+      text: () => Promise.resolve(data),
     };
   } catch (error) {
     statusMessage.textContent = message.failure;
